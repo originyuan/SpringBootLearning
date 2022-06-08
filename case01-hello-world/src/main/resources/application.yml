@@ -1,0 +1,10 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /helloworld
+spring:
+  main:
+    # 循环引用开关 2.6.x版本新增，默认为false，不建议打开，防止出现不易发现循环引用问题
+    allow-circular-references: true
+
+
