@@ -39,7 +39,7 @@ public class AppTest {
     public void mock() throws Exception {
         MvcResult mvcResult = null;
         mvcResult = mvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, URI.create("/get"))
-                )
+                .accept(MediaType.APPLICATION_JSON).param("aa", "123"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
