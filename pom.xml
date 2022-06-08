@@ -11,6 +11,7 @@
     <modules>
         <module>case01-hello-world</module>
         <module>case02-mybatis</module>
+        <module>case03-mybatis-plus</module>
     </modules>
 
     <properties>
