@@ -24,8 +24,9 @@ public class Order implements Serializable {
 
     /**
      * 主键
+     * 加上 type = IdType.AUTO 表示使用数据库自增id，无法设置值，即使set了值也不会传递
      */
-//    @TableId(value = "order_id", type = IdType.AUTO)  // 加上这个注解后表示使用数据库自增id，无法设置值，即使set了值也不会传递
+    @TableId(value = "order_id")
     private Long orderId;
 
     /**
