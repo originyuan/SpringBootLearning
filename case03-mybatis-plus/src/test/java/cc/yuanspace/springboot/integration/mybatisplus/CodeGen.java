@@ -42,7 +42,7 @@ public class CodeGen {
         // 是否自动打开输出目录
         globalConfig.setOpen(false);
         // 主键生成策略
-//        globalConfig.setIdType(IdType.AUTO);
+        globalConfig.setIdType(IdType.AUTO);
         // 覆盖已生成文件
         globalConfig.setFileOverride(true);
         // 生成resultMap
