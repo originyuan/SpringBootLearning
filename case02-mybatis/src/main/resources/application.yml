@@ -1,0 +1,31 @@
+
+server:
+  port: 8083
+  servlet:
+    context-path: /case02/mybatis
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/training?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true        # 开启驼峰命名
+    use-generated-keys: true
+#  配置文件地址，可以不用 直接使用配置
+#  config-location: classpath:mybatis/mybatis-config.xml
+
+
+logging:
+  level:
+    root: info
+    cc:
+      yuanspace:
+        springboot:
+          integration:
+            mybatis: debug
+
+
