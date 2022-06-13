@@ -1,11 +1,16 @@
 package cc.yuanspace.springboot.integration.mybatis;
 
+import cc.yuanspace.springboot.integration.mybatis.entity.OrderDO;
+import cc.yuanspace.springboot.integration.mybatis.entity.OrderDOExample;
 import cc.yuanspace.springboot.integration.mybatis.entity.UserDO;
+import cc.yuanspace.springboot.integration.mybatis.mapper.OrderDOMapper;
 import cc.yuanspace.springboot.integration.mybatis.mapper.UserMapper;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 public class AppTest {
@@ -17,5 +22,27 @@ public class AppTest {
         UserDO userDO = userMapper.selectOne(1L);
         System.out.println(JSONUtil.toJsonStr(userDO));
         System.out.println(userDO.getCreateTime());
+    }
+
+    @Autowired
+    private OrderDOMapper orderDOMapper;
+
+    @Test
+    public void testOrder() {
+        OrderDOExample orderDOExample = new OrderDOExample();
+        OrderDOExample.Criteria criteria = orderDOExample.createCriteria();
+        criteria.andOrderIdEqualTo(1L);
+
+        OrderDOExample.Criteria or = orderDOExample.or();
+        or.andOrderIdEqualTo(2L);
+
+        OrderDOExample.Criteria criteria1 = orderDOExample.createCriteria();
+        criteria1.andOrderIdEqualTo(3L);
+
+        orderDOExample.or(criteria1);
+
+        List<OrderDO> orderDOS = orderDOMapper.selectByExample(orderDOExample);
+
+        System.out.println(JSONUtil.toJsonStr(orderDOS));
     }
 }
