@@ -10,6 +10,6 @@
 |模块|描述|链接|
 |---|---|---|
 |hello-world|springboot基本工程，用于测试项目启动|[hello-world](https://github.com/originyuan/SpringBootIntegration/tree/main/case01-hello-world)|
-|mybatis|整合mybatis|[未完成]()|
+|mybatis|整合mybatis|[mybatis](https://github.com/originyuan/SpringBootIntegration/tree/main/case02-mybatis)|
 |mybatis-plus|整合mybatis-plus，包含代码生成和druid|[mybatis-plus](https://github.com/originyuan/SpringBootIntegration/tree/main/case03-mybatis-plus)|
 
