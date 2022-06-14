@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cc.yuanspace.springboot.integration.mybatis.mapper.UserMapper">
+<mapper namespace="cc.yuanspace.springboot.mybatis.mapper.UserMapper">
 
-    <select id="selectOne" resultType="cc.yuanspace.springboot.integration.mybatis.entity.UserDO">
+    <select id="selectOne" resultType="cc.yuanspace.springboot.mybatis.entity.UserDO">
     select
         *
     from

@@ -29,7 +29,7 @@
          targetProject  指定生成后文件所在目录，放这防止覆盖原文件
          -->
         <javaModelGenerator
-                targetPackage="cc.yuanspace.springboot.integration.mybatis.entity"
+                targetPackage="cc.yuanspace.springboot.mybatis.entity"
                 targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -37,14 +37,14 @@
 
         <!--指定sql映射文件生成的位置 -->
         <sqlMapGenerator
-                targetPackage="cc.yuanspace.springboot.integration.mybatis.mapper.xml"
+                targetPackage="cc.yuanspace.springboot.mybatis.mapper.xml"
                 targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!-- 指定dao接口生成的位置，mapper接口 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="cc.yuanspace.springboot.integration.mybatis.mapper"
+                             targetPackage="cc.yuanspace.springboot.mybatis.mapper"
                              targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
