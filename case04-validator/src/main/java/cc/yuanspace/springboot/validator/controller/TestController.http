@@ -1,0 +1,11 @@
+POST http://localhost:8084/validator/api/novalid
+Content-Type: application/json
+
+{
+  "name": "tom",
+  "num": "123",
+  "ids": [1,2,3]
+}
+
+###
+
