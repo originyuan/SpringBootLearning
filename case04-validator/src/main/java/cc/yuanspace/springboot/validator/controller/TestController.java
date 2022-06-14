@@ -1,6 +1,7 @@
 package cc.yuanspace.springboot.validator.controller;
 
 import cc.yuanspace.springboot.validator.vo.NoValidVO;
+import cc.yuanspace.springboot.validator.vo.ValidVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.validation.annotation.Validated;
@@ -23,14 +24,14 @@ public class TestController {
     }
 
     @PostMapping("/valid")
-    public String valid(@RequestBody @Valid NoValidVO nv) throws JsonProcessingException {
+    public String valid(@RequestBody @Valid ValidVO nv) throws JsonProcessingException {
         System.out.println(om.writeValueAsString(nv));
 
         return om.writeValueAsString(nv);
     }
 
     @PostMapping("/validated")
-    public String validated(@RequestBody @Validated NoValidVO nv) throws JsonProcessingException {
+    public String validated(@RequestBody @Validated ValidVO nv) throws JsonProcessingException {
         System.out.println(om.writeValueAsString(nv));
 
         return om.writeValueAsString(nv);

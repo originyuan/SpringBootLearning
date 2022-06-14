@@ -2,7 +2,7 @@
 
 > 校验参数在项目中是很常见的，在java中，几乎每个有入参的方法，在执行下一步操作之前，都要验证参数的合法性，比如是入参否为空，数据格式是否正确等等，往常的写法就是一大推的if-else,既不美观也不优雅，这个时候JCP组织站出来了，并且制定了一个标准来规范校验的操作，这个标准就是Java Validation API(JSR 303)  
 >  
-> (网上拷来的一段话)
+
 
 接口
 ```xml
@@ -26,6 +26,7 @@
 
 ```
 第二个实现，spring-boot-starter-validation  
+是对hibernate-validator的封装  
 提供了 @Validated 注解，可以校验对象参数，方法单个参数，分组校验
 ```xml
 <dependency>
@@ -50,13 +51,13 @@ function(@NotNull paramter)
 2、对象参数  
 function(@Valied object)    
 
-3、嵌套对象校验  
+3、嵌套校验  
 
 4、分组校验   
 
 5、BindResult   
 
-6、校验工具类--Validator对象  
+6、编程式校验--Validator对象  
 
 7、自定义注解和校验规则  
 

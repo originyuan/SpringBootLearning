@@ -1,3 +1,12 @@
+POST http://localhost:8084/validator/api/valid
+Content-Type: application/json
+
+{
+  "name": "tom",
+  "num": "123"
+}
+
+###
 POST http://localhost:8084/validator/api/novalid
 Content-Type: application/json
 
