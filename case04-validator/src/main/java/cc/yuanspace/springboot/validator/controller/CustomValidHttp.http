@@ -1,0 +1,9 @@
+POST http://localhost:8084/validator/api/custom/valid
+Content-Type: application/json
+
+{
+  "abc": "Abc"
+}
+
+###
+

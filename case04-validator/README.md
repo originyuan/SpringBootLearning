@@ -271,14 +271,109 @@ public class GroupValidVO {
     }
 ```
 
+##### 5、自定义注解和校验规则  
 
-##### 5、BindResult   
+```java
+/**
+ * 自定义校验注解
+ * 校验字符串是否为 abc
+ * 需要指定校验器
+ */
+@Constraint(validatedBy = IsABCValidator.class)
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IsABC {
+    String message() default "";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
+}
+```
+```java
+public class IsABCValidator implements ConstraintValidator<IsABC, String> {
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value != null) {
+            return "abc".equalsIgnoreCase(value);
+        }
+        return false;
+    }
+}
+```
 
 ##### 6、编程式校验--Validator对象  
+@Valid和@Validated只能用在参数校验上
+但如果需要在代码执行过程需要校验对象数据，这种方法就不行了  
+可以封装Validator对象，手动校验，封装返回结果
 
-##### 7、自定义注解和校验规则  
+```java
+public class ValidatorUtil {
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-##### 8、同一异常处理
+    public static Set<String> valid(Object obj) throws JsonProcessingException {
+        // 执行校验 返回
+        Set<ConstraintViolation<Object>> violationSet = validator.validate(obj);
+        Set<String> res = new HashSet<>();
+        for (ConstraintViolation<Object> constraintViolation : violationSet) {
+            // 错误描述
+            String message = constraintViolation.getMessage();
+            // 当前值
+            Object invalidValue = constraintViolation.getInvalidValue();
+            res.add(message + " current value is [" + invalidValue + "]");
+        }
+        return res;
+    }
+}
+```
+
+##### 7、快速失败(Fail Fast)配置
+注入一个bean，修改配置
+```java
+    @Bean
+    public Validator validator() {
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                // 快速失败模式
+                .failFast(true)
+                .buildValidatorFactory();
+        return validatorFactory.getValidator();
+    }
+```
+改造下ValidatorUtil
+```java
+// 上面已经创建了Validator 的bean对象，这里直接注入工具类里
+    @Bean
+    public ValidatorUtil validatorUtil(Validator validator) {
+        return new ValidatorUtil(validator);
+    }
+
+public class ValidatorUtil {
+    private static Validator validator;
+
+    public ValidatorUtil(Validator validator) {
+        ValidatorUtil.validator = validator;
+    }
+
+    public static Set<String> valid(Object obj) {
+        // 执行校验 返回
+        Set<ConstraintViolation<Object>> violationSet = validator.validate(obj);
+        Set<String> res = new HashSet<>();
+        for (ConstraintViolation<Object> constraintViolation : violationSet) {
+            // 错误描述
+            String message = constraintViolation.getMessage();
+            // 当前值
+            Object invalidValue = constraintViolation.getInvalidValue();
+            res.add(message + " current value is [" + invalidValue + "]");
+        }
+        return res;
+    }
+}
+```
+
+##### 8、BindResult   
+
+##### 9、统一异常处理
 对于校验不通过情况，会抛出 `MethodArgumentNotValidException` 和 `ConstraintViolationException` 异常  
 使用全局异常捕捉，处理这两种异常，封装自己的响应信息  
 
