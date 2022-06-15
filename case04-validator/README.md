@@ -240,8 +240,36 @@ public class NestedValidVO {
 
 ##### 4、分组校验   
 分组校验可以实现对于不同的方法，校验不同的字段  
+只能通过`@Validated` 注解实现分组校验  
+给校验注解指定分组class，任意class都行只要能区分就行  
+@Validated指定要处理的分组class，如果不指定则 **只能处理未分组** 的校验注解
 
+```java
+@Data
+public class GroupValidVO {
 
+    public interface Group1{}
+    public interface Group2{}
+
+    @NotBlank(groups = Group1.class)
+    private String name;
+
+    @NotNull(message = "[num]不能为空", groups = Group1.class)
+    @Min(value = 10, message = "[num]最小为10", groups = {Group1.class, Group2.class})
+    private Integer num;
+
+    @Email(message = "非法的email格式", groups = Group2.class)
+    private String email;
+
+    @NotBlank(message = "[nonGroup]不为空")
+    private String nonGroup;
+}
+// -------------------
+    @PostMapping("/validGroup1")
+    public String validGroup1(@RequestBody @Validated(value = GroupValidVO.Group1.class) GroupValidVO vo) throws JsonProcessingException {
+        return om.writeValueAsString(vo);
+    }
+```
 
 
 ##### 5、BindResult   

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Validated
 @RestController
 @RequestMapping("/nested")
 public class NestedValidController {
