@@ -1,0 +1,12 @@
+POST http://localhost:8084/validator/api/nested/valid
+Content-Type: application/json
+
+{
+  "name": "123",
+  "subValidVO": {
+    "subName": "rrr"
+  }
+}
+
+###
+

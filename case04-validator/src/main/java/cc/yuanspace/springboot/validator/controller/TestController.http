@@ -1,9 +1,36 @@
+###
+POST http://localhost:8084/validator/api/validated
+Content-Type: application/json
+
+{
+  "a": 1,
+  "name": "tom",
+  "num": "123"
+}
+
+###
 POST http://localhost:8084/validator/api/valid
 Content-Type: application/json
 
 {
-  "name": "tom",
-  "num": "123"
+  "a": 1,
+  "name": "    123",
+  "boolTrue": "true",
+  "pattern": "1238",
+  "min": "10",
+  "minf": "9.999999999999999",
+  "mind": "9.999999999999999999999999999999999999999",
+  "max": 8,
+  "decimalMinDouble": "2.500000000000001",
+  "decimalMaxDouble": 1.2,
+  "ids": [1,2,3],
+  "num": 1234,
+  "num2": 12346.33,
+  "pastDateTime": "2022-06-11 00:00:00",
+  "futureTime": "2023-01-01 00:00:00",
+  "negative": "-333",
+  "positive": 12
+
 }
 
 ###

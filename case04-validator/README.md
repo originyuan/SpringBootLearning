@@ -33,34 +33,231 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
-```
+``` 
+springboot2.3.x后面都需要手动引入上面两个依赖之一  
+
 
 通过使用@NotNull等注解配合@Valid或@Validated注解，可以快速实现参数校验  
 
 推荐使用 `validation-api` 中的注解，不推荐`hibernate-validator`中独有的注解，不具有泛用性  
 
+校验注解说明：
+
+|注解|说明|适用数据类型|
+|---|---|---|
+|@NotNull|被注释的元素不能为null|所有类型，基本类型一定能通过|
+|@Null|标记的字段必须为null|所有类型，基本类型一定不通过|
+|@NotBlank|不能为空白|字符串类型|
+|@AssertTrue|值必须为true，null值被认为有效|Boolean或boolean类型|
+|@AssertFalse|值必须为false，null值被认为有效|Boolean或boolean类型|
+|@Pattern|正则表达式匹配，null值有效|字符串类型|
+|@Email|email格式匹配，null值有效|字符串类型|
+|@Min|指定最小值，字段必须大于等于，null值有效，标记多个需要都满足|数值类型，不支持double、float(也能标记，但是可能出现精度问题)|
+|@Max|指定最大值，字段必须小于等于，null值有效，标记多个需要都满足|同 @Min|
+|@DecimalMin|字段必须大于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数|数值类型|
+|@DecimalMax|字段必须小于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数|数值类型|
+|@Size|集合、数组、字符串型字段元素个数|集合、数组、字符串|
+|@Digits|标注数字，指定整数位个数和小数位个数|数值类型|
+|@Past|被注释的元素必须是一个过去的日期|日期类型|
+|@Future|将来的一个日期|日期类型|
+|@Negative|负数|数字类型|
+|@Positive|正数|数字类型|
+|@Length|字符串长度范围|字符串类型|
+|@Range|数字范围|数值型|
 
 
-用法示例：    
-@Valid @Validated标记方法参数    
-1、方法单参数  
-这种方式不需要标记 @Valid @Validated  
+
+如果注解使用的类型不匹配会抛出 `UnexpectedTypeException` 异常  
+
+#### 快速使用
+  
+在模型类中需要校验的字段上加上校验注解，message属性定义校验失败后的提示信息  
+```java
+@Data
+public class ValidVO {
+
+    @NotNull(message = "不能为null")
+    @NotBlank(message = "字符串不能为空")
+    private String name;
+
+    private Integer num;
+    @NotEmpty(message = "列表不能为空")
+    private List<Long> ids;
+
+    private Integer gender;
+}
+```
+controller 方法参数上加上注解，`@Valid` 或者 `@Validated`都可以
+```java
+    @PostMapping("/valid")
+    public String valid(@RequestBody @Valid ValidVO nv) throws JsonProcessingException {
+        System.out.println(om.writeValueAsString(nv));
+
+        return om.writeValueAsString(nv);
+    }
+```
+
+对于校验不通过的默认会返回 `400 Bad request  `  
+![](.README_images/1878a598.png)
+
+在程序控制台打印日志可以看到错误信息
+![](.README_images/d8e04b0a.png)
+
+
+
+#### 详细用法示例
+  
+##### 1、方法单参数  
+这种方式不需要在方法参数上标记 @Valid @Validated，但是必须要在类上标记`@Validated`  
 function(@NotNull paramter)   
 
+```java
+@Validated // 不加这个下面参数上的@NotNull不生效
+@RestController
+@RequestMapping("/funcParam")
+public class FuncParamValidController {
+    @PostMapping("/valid")
+    public String validFunParam(@NotNull(message = "[name]参数不能为空") String name) {
+        return "valid success " + name;
+    }
+}
+```
+校验不通过会返回`500`错误  
+控制台抛出`ConstraintViolationException`异常
+![](.README_images/513de39f.png)
 
-2、对象参数  
-function(@Valied object)    
 
-3、嵌套校验  
+##### 2、对象参数  
+function(@Valid object)    
+最常用的，方法参数是个对象，对象内的字段标记校验注解  
+方法上标记 `@Valid` `@Validated` 效果是一样的
 
-4、分组校验   
+```java
+@Data
+public class ValidVO {
 
-5、BindResult   
+    // 默认为0，一定通过
+    @NotNull(message = "基本类型不能为null")
+    // 指定正数，0不是正数
+    @Positive(message = "基本数值必须为正数")
+    private int a;
 
-6、编程式校验--Validator对象  
+    // 一定不通过，默认为0
+    // @Null(message = "基本数值类型必须为null")
+    private int notnullInt;
 
-7、自定义注解和校验规则  
+    @NotNull(message = "不能为null")
+    @NotBlank(message = "字符串不能为空")
+    private String name;
+
+    @AssertTrue(message = "字段[boolTrue]必须为true")
+    private Boolean boolTrue;
+    @AssertFalse(message = "字段[boolFalse]必须为false")
+    private Boolean boolFalse;
+
+    @Pattern(regexp = "[1-8]{1,5}")
+    private String pattern;
+
+    @Email(message = "email格式")
+    private String email;
+
+    @Min(value = 10)
+    private Integer min;
+
+    @Min(value = 10)
+    private Float minf;
+
+    @Min(value = 10)
+    private Double mind;
+
+    @Max(value = 10, message = "最大值为10")
+    @Max(value = 8, message = "最大值为8")
+    private Integer max;
+
+    @DecimalMin(value = "2.5", inclusive = true)
+    private BigDecimal decimalMinDouble;
+
+    @DecimalMax(value = "2.5", inclusive = true)
+    private BigDecimal decimalMaxDouble;
 
 
-@Valid @Validated 标记对象   
+    @NotEmpty(message = "列表不能为空")
+    @Size(min = 1, max = 3, message = "列表元素只能为1-3个")
+    private List<Long> ids;
+
+    @Digits(integer = 4, fraction = 2)
+    private Integer num;
+
+    @Digits(integer = 5, fraction = 2)
+    private BigDecimal num2;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Past(message = "必须是一个过去的时间")
+    private LocalDateTime pastDateTime;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Future
+    private LocalDateTime futureTime;
+
+    @Negative(message = "一个负数")
+    private Integer negative;
+
+    @Positive(message = "一个正数")
+    private Integer positive;
+
+}
+```
+
+
+##### 3、嵌套校验  
+当需要校验对象成员的属性时，就需要使用嵌套校验  
+在成员对象的属性上添加`@Valid`注解，`@Validated` 不支持标记字段  
+
+```java
+@Data
+public class NestedValidVO {
+
+    @NotBlank(message = "[name]不能为空")
+    private String name;
+
+    //对象属性校验
+    @Valid
+    @NotNull(message = "[subValidVO]对象不能为空")
+    private SubValidVO subValidVO;
+
+    @Data
+    public static class SubValidVO {
+        @NotBlank(message = "子对象[subName]不能为空")
+        private String subName;
+    }
+}
+```
+
+
+##### 4、分组校验   
+分组校验可以实现对于不同的方法，校验不同的字段  
+
+
+
+
+##### 5、BindResult   
+
+##### 6、编程式校验--Validator对象  
+
+##### 7、自定义注解和校验规则  
+
+##### 8、同一异常处理
+对于校验不通过情况，会抛出 `MethodArgumentNotValidException` 和 `ConstraintViolationException` 异常  
+使用全局异常捕捉，处理这两种异常，封装自己的响应信息  
+
+
+----
+额外说明：   
+校验注解都是可以在一个字段上重复标记的，校验不通过所有的message都会返回的  
+注解上都有 `@Repeatable(List.class)` 说明是可重复的
+
 

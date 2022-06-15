@@ -24,10 +24,10 @@ public class TestController {
     }
 
     @PostMapping("/valid")
-    public String valid(@RequestBody @Valid ValidVO nv) throws JsonProcessingException {
+    public ValidVO valid(@RequestBody @Valid ValidVO nv) throws JsonProcessingException {
         System.out.println(om.writeValueAsString(nv));
-
-        return om.writeValueAsString(nv);
+        System.out.println(om.readValue(om.writeValueAsString(nv), ValidVO.class));
+        return nv;
     }
 
     @PostMapping("/validated")

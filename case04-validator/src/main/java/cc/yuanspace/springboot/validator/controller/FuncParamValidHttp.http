@@ -1,0 +1,7 @@
+POST http://localhost:8084/validator/api/funcParam/valid
+Content-Type: application/x-www-form-urlencoded
+
+id=99&content=new-element
+
+###
+
