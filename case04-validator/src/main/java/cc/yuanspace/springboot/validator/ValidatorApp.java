@@ -18,7 +18,7 @@ public class ValidatorApp {
         System.out.println("******启动成功************");
     }
 
-    @Bean
+    //@Bean
     public Validator validator() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
                 .configure()

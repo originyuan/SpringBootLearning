@@ -1,10 +1,15 @@
 ### 参数校验
 
+[toc]
+
+
 > 校验参数在项目中是很常见的，在java中，几乎每个有入参的方法，在执行下一步操作之前，都要验证参数的合法性，比如是入参否为空，数据格式是否正确等等，往常的写法就是一大推的if-else,既不美观也不优雅，这个时候JCP组织站出来了，并且制定了一个标准来规范校验的操作，这个标准就是Java Validation API(JSR 303)  
 >  
 
+#### 依赖
 
-接口
+接口  
+一般不需要直接引入，当暴露的RPC接口的Api包里需要对DTO对象进行校验时，就需要引入了
 ```xml
 <!-- api改名了，原先为javax.validaion>>validation-api -->
 <dependency>
@@ -41,29 +46,29 @@ springboot2.3.x后面都需要手动引入上面两个依赖之一
 
 推荐使用 `validation-api` 中的注解，不推荐`hibernate-validator`中独有的注解，不具有泛用性  
 
-校验注解说明：
+#### 校验注解说明
 
-|注解|说明|适用数据类型|
-|---|---|---|
-|@NotNull|被注释的元素不能为null|所有类型，基本类型一定能通过|
-|@Null|标记的字段必须为null|所有类型，基本类型一定不通过|
-|@NotBlank|不能为空白|字符串类型|
-|@AssertTrue|值必须为true，null值被认为有效|Boolean或boolean类型|
-|@AssertFalse|值必须为false，null值被认为有效|Boolean或boolean类型|
-|@Pattern|正则表达式匹配，null值有效|字符串类型|
-|@Email|email格式匹配，null值有效|字符串类型|
-|@Min|指定最小值，字段必须大于等于，null值有效，标记多个需要都满足|数值类型，不支持double、float(也能标记，但是可能出现精度问题)|
-|@Max|指定最大值，字段必须小于等于，null值有效，标记多个需要都满足|同 @Min|
-|@DecimalMin|字段必须大于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数|数值类型|
-|@DecimalMax|字段必须小于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数|数值类型|
-|@Size|集合、数组、字符串型字段元素个数|集合、数组、字符串|
-|@Digits|标注数字，指定整数位个数和小数位个数|数值类型|
-|@Past|被注释的元素必须是一个过去的日期|日期类型|
-|@Future|将来的一个日期|日期类型|
-|@Negative|负数|数字类型|
-|@Positive|正数|数字类型|
-|@Length|字符串长度范围|字符串类型|
-|@Range|数字范围|数值型|
+|注解         |说明                                                       |适用数据类型                                          |
+|------------|-----------------------------------------------------------|---------------------------------------------------|
+|@NotNull    |被注释的元素不能为null                                         |所有类型，基本类型一定能通过                            |
+|@Null       |标记的字段必须为null                                           |所有类型，基本类型一定不通过                            |
+|@NotBlank   |不能为空白                                                    |字符串类型                                          |
+|@AssertTrue |值必须为true，null值被认为有效                                  |Boolean或boolean类型                                |
+|@AssertFalse|值必须为false，null值被认为有效                                 |Boolean或boolean类型                                 |
+|@Pattern    |正则表达式匹配，null值有效                                      |字符串类型                                            |
+|@Email      |email格式匹配，null值有效                                      |字符串类型                                            |
+|@Min        |指定最小值，字段必须大于等于，null值有效，标记多个需要都满足           |数值类型，不支持double、float(也能标记，但是可能出现精度问题) |
+|@Max        |指定最大值，字段必须小于等于，null值有效，标记多个需要都满足           |同 @Min                                              |
+|@DecimalMin |字段必须大于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数    |数值类型                                              |
+|@DecimalMax |字段必须小于等于，可以设置是否包含当前值，用字符串设置数字，可以为小数    |数值类型                                              |
+|@Size       |集合、数组、字符串型字段元素个数                                  |集合、数组、字符串                                      |
+|@Digits     |标注数字，指定整数位个数和小数位个数                               |数值类型                                             |
+|@Past       |被注释的元素必须是一个过去的日期                                  |日期类型                                             |
+|@Future     |将来的一个日期                                                |日期类型                                             |
+|@Negative   |负数                                                        |数字类型                                              |
+|@Positive   |正数                                                        |数字类型                                              |
+|@Length     |字符串长度范围                                                |字符串类型                                            |
+|@Range      |数字范围                                                     |数值型                                               |
 
 
 
@@ -107,10 +112,16 @@ controller 方法参数上加上注解，`@Valid` 或者 `@Validated`都可以
 
 #### 详细用法示例
   
-##### 1、方法单参数  
-这种方式不需要在方法参数上标记 @Valid @Validated，但是必须要在类上标记`@Validated`  
-function(@NotNull paramter)   
+##### 1、方法参数校验  
+这种方式必须要在类上标记`@Validated`  
+对于普通参数的只需要标记校验注解就可以了，会抛出 `ConstraintViolationException` 异常，返回`500`错误  
+ `function(@NotNull paramter, @NotNull paramter) `   
+![](.README_images/513de39f.png)
 
+对于对象参数，需要标记 @Valid（不能是 @Validated）， 也会抛出`ConstraintViolationException`异常，不是走下面的`MethodArgumentNotValidException`异常处理
+`function(@Valid obj) `  
+
+（这种方法校验不通过时，不能使用下面的BindingResult获取错误消息）
 ```java
 @Validated // 不加这个下面参数上的@NotNull不生效
 @RestController
@@ -120,11 +131,13 @@ public class FuncParamValidController {
     public String validFunParam(@NotNull(message = "[name]参数不能为空") String name) {
         return "valid success " + name;
     }
+    @PostMapping("/validObj")
+    public Map<String, Object> validObj(@RequestBody @Valid ValidVO vo) {
+        return null;
+    }
+
 }
 ```
-校验不通过会返回`500`错误  
-控制台抛出`ConstraintViolationException`异常
-![](.README_images/513de39f.png)
 
 
 ##### 2、对象参数  
@@ -371,11 +384,98 @@ public class ValidatorUtil {
 }
 ```
 
-##### 8、BindResult   
+##### 8、BindingResult   
+当校验不通过时需要获取错误信息，可以使用BindingResult获取校验结果  
+需要放在@Valid标记的参数的紧挨着的下一个参数位置
+```java
+@Validated
+@RestController
+@RequestMapping("/bindResult")
+public class BindResultValidController {
+    ObjectMapper om = new ObjectMapper();
+
+    /**
+     * 由于类上标注了@Validated，所以这里必须使用@Validated，否则就抛出ConstraintViolationException异常
+     * 而不是封装到BindingResult对象中
+     */
+    @PostMapping("/valid")
+    public Map<String, Object> valid(@RequestBody @Validated ValidVO vo, BindingResult bindingResult) throws JsonProcessingException {
+        List<ObjectError> allErrors = bindingResult.getAllErrors();
+        StringBuilder sb = new StringBuilder();
+        for (ObjectError error : allErrors) {
+            sb.append(error.getDefaultMessage()).append(";");
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("errmsg", sb.toString());
+        return res;
+    }
+
+    /**
+     * 这种不支持BindingResult 异常被抛出了
+     */
+    @GetMapping("/validFun")
+    public Map<String, Object> validFun(@NotNull(message = "[name]参数不能为空") String name, BindingResult bindResult) throws JsonProcessingException {
+        System.out.println(name);
+        System.out.println(bindResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+        return new HashMap<>();
+    }
+}
+```
 
 ##### 9、统一异常处理
-对于校验不通过情况，会抛出 `MethodArgumentNotValidException` 和 `ConstraintViolationException` 异常  
-使用全局异常捕捉，处理这两种异常，封装自己的响应信息  
+当参数校验不通过时，会抛出 `MethodArgumentNotValidException` 和 `ConstraintViolationException` 异常  
+对于`MethodArgumentNotValidException`异常，SpringBoot会通过默认处理器打印log，返回400 bad request
+而`ConstraintViolationException` 异常则会被抛出，最终返回500服务端错误
+每次都使用BindingResult获取结果太麻烦，就可以定义全局异常处理，自行处理这两种异常，定义响应信息  
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> constraintViolationExceptionHandle(ConstraintViolationException e) {
+        log.error("ConstraintViolationException", e);
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        StringBuilder sb = new StringBuilder();
+        for (ConstraintViolation<?> violation : constraintViolations) {
+            String message = violation.getMessage();
+            Object invalidValue = violation.getInvalidValue();
+            sb.append(message).append(":").append(invalidValue).append("\n");
+        }
+        Map<String, Object> r = new HashMap<>();
+        r.put("errcode", 1);
+        r.put("errmsg", sb.toString());
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> MethodArgumentNotValidExceptionHandle(MethodArgumentNotValidException e) {
+        log.error("MethodArgumentNotValidException", e);
+        // MethodArgumentNotValidException 异常 需要从BindingResult中提取错误信息
+        BindingResult bindingResult = e.getBindingResult();
+        StringBuilder sb = new StringBuilder();
+        for (ObjectError error : bindingResult.getAllErrors()) {
+            sb.append(error.getDefaultMessage()).append(";");
+        }
+        Map<String, Object> r = new HashMap<>();
+        r.put("errcode", 1);
+        r.put("errmsg", sb.toString());
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+     @ExceptionHandler(value = Exception.class)
+     public ResponseEntity<Map<String, Object>> exceptionHandle(Exception e) {
+         log.error("exception", e);
+
+         Map<String, Object> r = new HashMap<>();
+         r.put("errcode", 1);
+         r.put("errmsg", "系统繁忙，请稍后重试！");
+         return new ResponseEntity<>(r, HttpStatus.OK);
+     }
+}
+```
 
 
 ----
