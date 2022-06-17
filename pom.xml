@@ -13,24 +13,15 @@
         <module>case02-mybatis</module>
         <module>case03-mybatis-plus</module>
         <module>case04-validator</module>
+        <module>case05-redis</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
         <spring.boot.version>2.6.7</spring.boot.version>
-        <junit.version>4.12</junit.version>
-        <hutool.version>5.7.18</hutool.version>
-        <fastjson.version>1.2.78</fastjson.version>
-
-        <google.guava>31.1-jre</google.guava>
-
-        <mysql.varsion>5.1.47</mysql.varsion>
-        <druid.version>1.2.1</druid.version>
-
-        <lombok.version>1.18.24</lombok.version>
-
     </properties>
 
     <dependencyManagement>
@@ -42,45 +33,6 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- hutool工具 -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-
-            <!-- fastjson -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-
-            <!-- 工具 -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${google.guava}</version>
-            </dependency>
-
-            <!-- mysql -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.varsion}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
