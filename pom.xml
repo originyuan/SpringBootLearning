@@ -16,6 +16,7 @@
         <module>case05-redis</module>
         <module>case06-kafka</module>
         <module>case07-elasticsearch</module>
+        <module>case08-schedule</module>
     </modules>
 
     <properties>
