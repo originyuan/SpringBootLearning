@@ -14,6 +14,7 @@
         <module>case03-mybatis-plus</module>
         <module>case04-validator</module>
         <module>case05-redis</module>
+        <module>case06-kafka</module>
     </modules>
 
     <properties>
