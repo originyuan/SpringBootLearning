@@ -15,6 +15,7 @@
         <module>case04-validator</module>
         <module>case05-redis</module>
         <module>case06-kafka</module>
+        <module>case07-elasticsearch</module>
     </modules>
 
     <properties>
