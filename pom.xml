@@ -18,6 +18,7 @@
         <module>case07-elasticsearch</module>
         <module>case08-schedule</module>
         <module>case09-async</module>
+        <module>case10-shiro</module>
     </modules>
 
     <properties>
