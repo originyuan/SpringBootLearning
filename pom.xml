@@ -17,6 +17,7 @@
         <module>case06-kafka</module>
         <module>case07-elasticsearch</module>
         <module>case08-schedule</module>
+        <module>case09-async</module>
     </modules>
 
     <properties>
