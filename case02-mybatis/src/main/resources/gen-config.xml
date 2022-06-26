@@ -22,6 +22,8 @@
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
+            <!-- 增加下面这行，用于配置生成LocalDateTime对应数据库的DATETIME类型 -->
+            <property name="useJSR310Types" value="true" />
         </javaTypeResolver>
 
         <!-- 指定javaBean生成的位置
@@ -51,8 +53,8 @@
 
 
         <!-- table指定表的生成策略 -->
-        <table tableName="t_order"
-               domainObjectName="OrderDO">
+        <table tableName="t_order_item"
+               domainObjectName="OrderItemDO">
         </table>
 
 
