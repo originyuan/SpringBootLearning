@@ -26,7 +26,7 @@ public class TestCache {
      * 实际上是每个事务会创建一个SqlSession，而在没有开启事务的情况下，每条 mapper 语句都是一个独立事务
      * 如果想要一级缓存生效，可以开启事务
      *
-     * 调整一级缓存级别为 statement 级别后，无论是否开启事务，缓存只对语句生效（等于关闭一级缓存）
+     * 调整一级缓存级别为 statement 级别关闭缓存
      *
      * 一级缓存
      *   SqlSession 级别

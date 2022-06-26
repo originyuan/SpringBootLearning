@@ -16,7 +16,7 @@ mybatis:
     map-underscore-to-camel-case: true        # 开启驼峰命名
     use-generated-keys: true
     cache-enabled: true   # 开启二级缓存（默认就是开启的，但是要使用还得在 mapper.xml 中配置启用）
-    local-cache-scope: statement  # 使用 statement 级别一级缓存，默认是 session 级别
+    local-cache-scope: statement  # 使用 statement 级别一级缓存，关闭一级缓存，默认是 session 级别
 #  配置文件地址，可以不用 直接使用上面配置
 #  config-location: classpath:mybatis/mybatis-config.xml
 
