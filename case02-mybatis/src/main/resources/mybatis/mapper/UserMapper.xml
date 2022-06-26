@@ -6,7 +6,7 @@
 <mapper namespace="cc.yuanspace.springboot.mybatis.mapper.UserMapper">
 
     <!-- 开启二级缓存 -->
-    <cache/>
+<!--    <cache/>-->
 
     <select id="selectOne" resultType="cc.yuanspace.springboot.mybatis.entity.UserDO">
     select
