@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>case10-shiro</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>shiro-basic</module>
+    </modules>
 
 
 </project>
