@@ -51,6 +51,5 @@ logging:
     cc:
       yuanspace:
         springboot:
-          integration:
-            mybatisplus: info
+          mybatisplus: info
 
