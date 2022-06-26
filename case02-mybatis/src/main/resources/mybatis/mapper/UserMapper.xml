@@ -5,6 +5,9 @@
 
 <mapper namespace="cc.yuanspace.springboot.mybatis.mapper.UserMapper">
 
+    <!-- 开启二级缓存 -->
+    <cache/>
+
     <select id="selectOne" resultType="cc.yuanspace.springboot.mybatis.entity.UserDO">
     select
         *
@@ -13,5 +16,18 @@
     where
         user_id = #{userId}
   </select>
+    <select id="listByGender" resultType="cc.yuanspace.springboot.mybatis.entity.UserDO">
+        select
+            *
+        from
+            t_user
+        where
+            gender = #{gender}
+    </select>
+
+    <insert id="insert">
+        insert into t_user(username, gender, create_time)
+        values(#{username}, #{gender}, #{createTime})
+    </insert>
 
 </mapper>
