@@ -19,6 +19,7 @@
         <module>case08-schedule</module>
         <module>case09-async</module>
         <module>case10-shiro</module>
+        <module>case11-actuator</module>
     </modules>
 
     <properties>
