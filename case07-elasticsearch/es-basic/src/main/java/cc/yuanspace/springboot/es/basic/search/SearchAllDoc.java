@@ -6,7 +6,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -14,11 +13,10 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
 
-public class SearchDoc {
+public class SearchAllDoc {
 
     public static void main(String[] args) throws IOException {
         RestHighLevelClient esClient = new RestHighLevelClient(RestClient.builder(new HttpHost("127.0.0.1", 9200, "http")));
-
 
         SearchRequest request = new SearchRequest();
         request.indices("user");
@@ -27,8 +25,7 @@ public class SearchDoc {
 //        searchSourceBuilder.fetchSource(false);
         searchSourceBuilder.fetchSource(true);
 
-//        searchSourceBuilder.query(QueryBuilders.termQuery("sex","男")); // 匹配不到
-        searchSourceBuilder.query(QueryBuilders.termQuery("sex","男的"));
+        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
 
         request.source(searchSourceBuilder);
 
