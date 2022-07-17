@@ -18,5 +18,6 @@ public class KafkaMqConsumer {
         log.info("mq-consumer at {}  topic:{} partition:{} value:{}  time:{}", LocalDateTime.now(),
                 record.topic(), record.partition(), record.value(), record.timestamp());
         ack.acknowledge();
+//        ack.nack(1000); // 不提交，并重新消费 == seek
     }
 }
