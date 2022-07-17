@@ -1,4 +1,4 @@
-package cc.yuanspace.springboot.elasticsearch.config;
+package cc.yuanspace.springboot.es.springdata.config;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;

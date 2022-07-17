@@ -1,6 +1,6 @@
-package cc.yuanspace.springboot.elasticsearch;
+package cc.yuanspace.springboot.es.springdata;
 
-import cc.yuanspace.springboot.elasticsearch.entity.Product;
+import cc.yuanspace.springboot.es.springdata.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

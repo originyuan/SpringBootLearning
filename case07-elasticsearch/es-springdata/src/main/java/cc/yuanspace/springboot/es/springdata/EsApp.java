@@ -1,4 +1,4 @@
-package cc.yuanspace.springboot.elasticsearch;
+package cc.yuanspace.springboot.es.springdata;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

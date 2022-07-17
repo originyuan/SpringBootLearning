@@ -1,6 +1,6 @@
-package cc.yuanspace.springboot.elasticsearch.repository;
+package cc.yuanspace.springboot.es.springdata.repository;
 
-import cc.yuanspace.springboot.elasticsearch.entity.Product;
+import cc.yuanspace.springboot.es.springdata.entity.Product;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

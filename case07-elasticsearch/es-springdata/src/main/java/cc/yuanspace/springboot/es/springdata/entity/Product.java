@@ -1,4 +1,4 @@
-package cc.yuanspace.springboot.elasticsearch.entity;
+package cc.yuanspace.springboot.es.springdata.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
